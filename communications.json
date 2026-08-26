@@ -5,7 +5,9 @@
     "category": "Guides pratiques",
     "status": "En ligne",
     "date": "26/08/2026",
-    "url": "https://cat-energies-cattenom.github.io/guides/Guide%20de%20la%20rentr%C3%A9e%20-%202026.html"
+    "url": "https://cat-energies-cattenom.github.io/guides/Guide%20de%20la%20rentr%C3%A9e%20-%202026.html",
+    "updated": "2026-08-26",
+    "created": "2026-08-26"
   },
   {
     "title": "Adhésion",
@@ -13,7 +15,9 @@
     "category": "Adhésion",
     "status": "En ligne",
     "date": "26/08/2026",
-    "url": "https://cat-energies-cattenom.github.io/adhesion/Bulletin%20d'adh%C3%A9sion_Cattenom.html"
+    "url": "https://cat-energies-cattenom.github.io/adhesion/Bulletin%20d'adh%C3%A9sion_Cattenom.html",
+    "updated": "2026-08-26",
+    "created": "2026-08-26"
   },
   {
     "title": "RSS vs DS",
@@ -21,6 +25,8 @@
     "category": "Communiqués",
     "status": "En ligne",
     "date": "26/08/2026",
-    "url": "https://cat-energies-cattenom.github.io/communique/08%20-%20Pr%C3%A9sentation%20de%20la%20section%20CAT_Energies_Cattenom.html"
+    "url": "https://cat-energies-cattenom.github.io/communique/08%20-%20Pr%C3%A9sentation%20de%20la%20section%20CAT_Energies_Cattenom.html",
+    "updated": "2026-08-26",
+    "created": "2026-08-26"
   }
 ]
