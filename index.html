@@ -302,6 +302,263 @@
     color:var(--muted);
     text-align:right;
   }
+
+  .portal-search{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:22px;
+    margin-bottom:28px;
+  }
+  .search-kicker{
+    font-size:24px;
+    font-weight:800;
+    margin-bottom:14px;
+    color:var(--text);
+  }
+  .search-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 190px;
+    gap:12px;
+  }
+
+  .section-head{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
+    gap:16px;
+    margin:0 2px 14px;
+  }
+  .section-head h2{
+    margin:2px 0 0;
+    font-size:24px;
+  }
+  .eyebrow{
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    font-size:12px;
+    font-weight:800;
+    color:var(--primary);
+  }
+
+  .category-section,.quick-section,.latest-section,.results-section{
+    margin:28px 0;
+  }
+
+  .category-tiles{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+  }
+  .category-tile{
+    border:1px solid var(--line);
+    background:#fff;
+    border-radius:16px;
+    padding:18px;
+    text-align:left;
+    cursor:pointer;
+    transition:.18s transform,.18s box-shadow;
+    box-shadow:0 4px 14px rgba(31,72,94,.05);
+  }
+  .category-tile:hover{
+    transform:translateY(-2px);
+    box-shadow:var(--shadow);
+  }
+  .category-tile strong{
+    display:block;
+    font-size:16px;
+    margin-bottom:4px;
+  }
+  .category-tile span{
+    font-size:13px;
+    color:var(--muted);
+  }
+  .category-tile[data-cat="Guides pratiques"]{border-top:5px solid #2e6dbf}
+  .category-tile[data-cat="Adhésion"]{border-top:5px solid #379331}
+  .category-tile[data-cat="Communiqués"]{border-top:5px solid #f5a800}
+  .category-tile[data-cat="Événements"]{border-top:5px solid #a45dbd}
+  .category-tile[data-cat="Actualités"]{border-top:5px solid #0b8f8f}
+  .category-tile[data-cat="Archives"]{border-top:5px solid #7f8c98}
+
+  .quick-links{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:14px;
+  }
+  .quick-link{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    text-decoration:none;
+    background:#0e1f4a;
+    color:#fff;
+    border-radius:16px;
+    padding:18px;
+  }
+  .quick-link small{
+    display:block;
+    opacity:.75;
+    margin-top:4px;
+  }
+  .quick-arrow{
+    font-size:22px;
+    opacity:.8;
+  }
+
+  .latest-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:16px;
+  }
+  .latest-item{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 6px 18px rgba(31,72,94,.06);
+  }
+  .latest-item h3{
+    margin:12px 0 8px;
+    font-size:18px;
+  }
+  .latest-item p{
+    color:var(--muted);
+    font-size:14px;
+    line-height:1.5;
+    min-height:42px;
+  }
+  .latest-meta{
+    font-size:12px;
+    color:#8797a4;
+    margin:10px 0 14px;
+  }
+
+  .ghost-btn{
+    border:1px solid #cbdce6;
+    background:#fff;
+    color:var(--primary-dark);
+    border-radius:11px;
+    padding:10px 13px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .total-count{
+    color:var(--muted);
+    font-size:14px;
+  }
+  .sort-select{
+    width:auto;
+    min-width:160px;
+  }
+  .results-section{
+    display:none;
+  }
+  .results-section.visible{
+    display:block;
+  }
+
+  @media(max-width:900px){
+    .category-tiles,.quick-links,.latest-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:620px){
+    .search-row{grid-template-columns:1fr}
+    .category-tiles,.quick-links,.latest-grid{grid-template-columns:1fr}
+    .section-head{align-items:flex-start;flex-direction:column}
+    .sort-select{width:100%}
+  }
+
+
+  .welcome-panel{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    padding:24px;
+    display:grid;
+    grid-template-columns:minmax(0,.85fr) minmax(320px,1.15fr);
+    gap:24px;
+    align-items:center;
+    margin-bottom:28px;
+  }
+  .welcome-copy h2{
+    margin:4px 0 8px;
+    font-size:30px;
+  }
+  .welcome-copy p{
+    margin:0;
+    color:var(--muted);
+    line-height:1.55;
+  }
+  .welcome-search input{
+    font-size:16px;
+    padding:15px 16px;
+    border-radius:14px;
+  }
+
+  .category-pills{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .category-pill-btn{
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--text);
+    border-radius:999px;
+    padding:11px 16px;
+    font-weight:800;
+    cursor:pointer;
+    transition:.15s ease;
+  }
+  .category-pill-btn:hover{
+    transform:translateY(-1px);
+    box-shadow:0 6px 16px rgba(31,72,94,.08);
+  }
+  .category-pill-btn .count{
+    font-weight:600;
+    opacity:.65;
+    margin-left:6px;
+  }
+
+  .category-pill-btn[data-cat="Guides pratiques"]{border-color:#b9cff0;color:#2e6dbf;background:#f7faff}
+  .category-pill-btn[data-cat="Adhésion"]{border-color:#bfdcb9;color:#379331;background:#f8fff5}
+  .category-pill-btn[data-cat="Communiqués"]{border-color:#f1d79c;color:#a66b00;background:#fffaf1}
+  .category-pill-btn[data-cat="Événements"]{border-color:#d9bce5;color:#8b4ca3;background:#fcf8ff}
+  .category-pill-btn[data-cat="Actualités"]{border-color:#b6dddd;color:#0b7d7d;background:#f5ffff}
+  .category-pill-btn[data-cat="Archives"]{border-color:#d0d6da;color:#68747e;background:#f8f9fa}
+
+  .latest-grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:16px;
+  }
+  .latest-item{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 5px 16px rgba(31,72,94,.05);
+  }
+  .latest-item h3{margin:12px 0 8px;font-size:18px}
+  .latest-item p{color:var(--muted);font-size:14px;line-height:1.5;min-height:42px}
+  .latest-meta{font-size:12px;color:#8797a4;margin:10px 0 14px}
+
+  .results-section{display:none;margin-top:30px}
+  .results-section.visible{display:block}
+  .sort-select{width:auto;min-width:160px}
+
+  @media(max-width:850px){
+    .welcome-panel{grid-template-columns:1fr}
+    .latest-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:620px){
+    .latest-grid{grid-template-columns:1fr}
+    .section-head{align-items:flex-start;flex-direction:column}
+    .sort-select{width:100%}
+  }
+
 </style>
 </head>
 <body>
@@ -331,37 +588,59 @@
   </div>
 </header>
 
-<main class="container">
-  <section class="toolbar">
-    <input id="search" type="search" placeholder="🔎 Rechercher une communication..." />
-    <select id="categoryFilter">
-      <option value="">Toutes les catégories</option>
-    </select>
-    <select id="statusFilter">
-      <option value="">Tous les statuts</option>
-      <option value="En ligne">En ligne</option>
-      <option value="À venir">À venir</option>
-      <option value="Archivé">Archivé</option>
-    </select>
-  </section>
-  <div id="searchIndexStatus" class="search-index-status">Indexation du contenu des pages…</div>
 
-  <section class="latest-wrap">
-    <div class="latest-title">Dernier ajout</div>
-    <div id="latestCard" class="latest-card">
-      <span class="latest-badge">Nouveau</span>
-      <h2>Chargement…</h2>
-      <p>Récupération de la dernière communication.</p>
+
+<main class="container">
+
+  <section class="welcome-panel">
+    <div class="welcome-copy">
+      <div class="eyebrow">Portail CAT Énergies Cattenom</div>
+      <h2>Que recherchez-vous ?</h2>
+      <p>Recherchez un mot, un sujet ou une prestation dans l’ensemble de nos communications.</p>
+    </div>
+    <div class="welcome-search">
+      <input id="search" type="search" placeholder="🔎 Ex. vacances, logement, adhésion, RSS..." />
+      <div id="searchIndexStatus" class="search-index-status">Indexation du contenu des pages…</div>
     </div>
   </section>
 
-  <div class="meta">
-    <span id="count">Chargement…</span>
-    <span id="updateInfo">Données dynamiques</span>
-  </div>
+  <section class="category-section">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Parcourir</div>
+        <h2>Catégories</h2>
+      </div>
+      <button id="showAllBtn" class="ghost-btn" type="button">Tout afficher</button>
+    </div>
+    <div id="categoryPills" class="category-pills"></div>
+  </section>
 
-  <section id="cards" class="grid">
-    <div class="empty">Chargement des communications…</div>
+  <section class="latest-section">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">À la une</div>
+        <h2>Derniers ajouts</h2>
+      </div>
+      <span id="totalCount" class="total-count"></span>
+    </div>
+    <div id="latestGrid" class="latest-grid">
+      <div class="empty">Chargement des dernières communications…</div>
+    </div>
+  </section>
+
+  <section id="resultsSection" class="results-section">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Résultats</div>
+        <h2 id="resultsTitle">Toutes les communications</h2>
+      </div>
+      <select id="sortSelect" class="sort-select">
+        <option value="recent">Plus récentes</option>
+        <option value="az">A → Z</option>
+        <option value="za">Z → A</option>
+      </select>
+    </div>
+    <div id="cards" class="grid"></div>
   </section>
 
   <section class="contact-box">
@@ -376,29 +655,38 @@
 
 </main>
 
+
+
 <footer>
   CAT Énergies Cattenom • Centre des communications
 </footer>
 
 <script>
 let communications = [];
+let activeCategory = "";
 
 const cards = document.getElementById("cards");
 const search = document.getElementById("search");
-const categoryFilter = document.getElementById("categoryFilter");
-const statusFilter = document.getElementById("statusFilter");
-const count = document.getElementById("count");
-const updateInfo = document.getElementById("updateInfo");
-const latestCard = document.getElementById("latestCard");
+const sortSelect = document.getElementById("sortSelect");
+const categoryPills = document.getElementById("categoryPills");
+const latestGrid = document.getElementById("latestGrid");
+const totalCount = document.getElementById("totalCount");
+const resultsSection = document.getElementById("resultsSection");
+const resultsTitle = document.getElementById("resultsTitle");
+const showAllBtn = document.getElementById("showAllBtn");
 const searchIndexStatus = document.getElementById("searchIndexStatus");
 
+function escapeHtml(value){
+  return String(value ?? "").replace(/[&<>"']/g, char => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
+  }[char]));
+}
 
-function categorySlug(value){
-  return String(value || "Autres")
-    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g,"-")
-    .replace(/^-+|-+$/g,"") || "autres";
+function normalizeSearchText(value){
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
 }
 
 function parseDate(value){
@@ -409,39 +697,15 @@ function parseDate(value){
 
 function formatDateISO(value){
   const d = parseDate(value);
-  if(d.getTime() === 0) return "Non renseignée";
-  return d.toLocaleDateString("fr-FR");
+  return d.getTime() === 0 ? "Non renseignée" : d.toLocaleDateString("fr-FR");
 }
 
-
-function renderLatest(){
-  if(!communications.length){
-    latestCard.innerHTML = '<p>Aucune communication disponible.</p>';
-    return;
-  }
-
-  const latest = [...communications].sort((a,b) =>
-    parseDate(b.updated || b.created) - parseDate(a.updated || a.created)
-  )[0];
-
-  latestCard.innerHTML = `
-    <div class="latest-content">
-      <span class="latest-badge">Nouveau · ${escapeHtml(latest.category || "Autres")}</span>
-      <h2>${escapeHtml(latest.title)}</h2>
-      <p>${escapeHtml(latest.description || "")}</p>
-      <div class="date">Mis à jour le ${formatDateISO(latest.updated || latest.created)}</div>
-      <div class="actions">
-        <button class="btn open latest-open" data-url="${escapeHtml(latest.url)}">Ouvrir la page</button>
-      </div>
-    </div>
-  `;
-
-  const openBtn = latestCard.querySelector(".latest-open");
-  if(openBtn){
-    openBtn.addEventListener("click", () =>
-      window.open(openBtn.dataset.url, "_blank", "noopener")
-    );
-  }
+function categorySlug(value){
+  return String(value || "Autres")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"") || "autres";
 }
 
 function statusClass(status){
@@ -450,55 +714,25 @@ function statusClass(status){
   return "archived";
 }
 
-function escapeHtml(value){
-  return String(value ?? "").replace(/[&<>"']/g, char => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"
-  }[char]));
-}
-
-function fillCategories(){
-  const categories = [...new Set(communications.map(x => x.category).filter(Boolean))].sort();
-  categoryFilter.innerHTML = '<option value="">Toutes les catégories</option>';
-  categories.forEach(cat => {
-    const opt = document.createElement("option");
-    opt.value = cat;
-    opt.textContent = cat;
-    categoryFilter.appendChild(opt);
-  });
-}
-
-
-function normalizeSearchText(value){
-  return String(value || "")
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .toLowerCase();
-}
-
 function extractPageText(htmlText){
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlText, "text/html");
   doc.querySelectorAll("script, style, noscript, svg").forEach(el => el.remove());
-
   return normalizeSearchText(
-    (doc.title || "") + " " +
-    (doc.body ? doc.body.innerText : "")
+    (doc.title || "") + " " + (doc.body ? doc.body.innerText : "")
   ).replace(/\s+/g, " ").trim();
 }
 
 async function indexOnePage(item){
   item._searchText = normalizeSearchText(
-    `${item.title || ""} ${item.description || ""} ${item.category || ""} ${item.status || ""}`
+    `${item.title || ""} ${item.description || ""} ${item.category || ""}`
   );
-
   if(!item.url) return false;
 
   try{
     const response = await fetch(item.url, { cache: "no-store" });
     if(!response.ok) throw new Error("HTTP " + response.status);
-
-    const pageHtml = await response.text();
-    item._searchText += " " + extractPageText(pageHtml);
+    item._searchText += " " + extractPageText(await response.text());
     return true;
   }catch(error){
     console.warn("Impossible d’indexer :", item.url, error);
@@ -507,43 +741,90 @@ async function indexOnePage(item){
 }
 
 async function indexPageContents(){
-  if(!communications.length){
-    if(searchIndexStatus) searchIndexStatus.textContent = "";
-    return;
-  }
-
   if(searchIndexStatus) searchIndexStatus.textContent = "Indexation du contenu des pages…";
-
-  const results = await Promise.allSettled(
-    communications.map(item => indexOnePage(item))
-  );
-
+  const results = await Promise.allSettled(communications.map(indexOnePage));
   const ok = results.filter(r => r.status === "fulfilled" && r.value === true).length;
-
   if(searchIndexStatus){
-    searchIndexStatus.textContent =
-      `${ok}/${communications.length} page${communications.length > 1 ? "s" : ""} indexée${ok > 1 ? "s" : ""} pour la recherche`;
+    searchIndexStatus.textContent = `${ok}/${communications.length} pages indexées pour la recherche`;
   }
-
-  render();
+  if(search.value.trim()) showResults();
 }
 
-function render(){
-  const q = search.value.toLowerCase().trim();
-  const cat = categoryFilter.value;
-  const stat = statusFilter.value;
+function renderCategories(){
+  const counts = {};
+  communications.forEach(item => {
+    const cat = item.category || "Autres";
+    counts[cat] = (counts[cat] || 0) + 1;
+  });
 
-  const filtered = communications.filter(item => {
+  categoryPills.innerHTML = Object.entries(counts)
+    .sort((a,b) => a[0].localeCompare(b[0], "fr"))
+    .map(([cat, qty]) => `
+      <button class="category-pill-btn" type="button" data-cat="${escapeHtml(cat)}">
+        ${escapeHtml(cat)}
+        <span class="count">${qty}</span>
+      </button>
+    `).join("");
+
+  categoryPills.querySelectorAll(".category-pill-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeCategory = btn.dataset.cat;
+      search.value = "";
+      showResults();
+    });
+  });
+}
+
+function renderLatest(){
+  const latest = [...communications]
+    .sort((a,b) => parseDate(b.updated || b.created) - parseDate(a.updated || a.created))
+    .slice(0,3);
+
+  latestGrid.innerHTML = latest.map(item => `
+    <article class="latest-item type-${categorySlug(item.category)}">
+      <span class="category type-pill-${categorySlug(item.category)}">${escapeHtml(item.category || "Autres")}</span>
+      <h3>${escapeHtml(item.title)}</h3>
+      <p>${escapeHtml(item.description || "")}</p>
+      <div class="latest-meta">Mis à jour le ${formatDateISO(item.updated || item.created)}</div>
+      <button class="btn open" data-url="${escapeHtml(item.url)}">Ouvrir la page</button>
+    </article>
+  `).join("");
+
+  latestGrid.querySelectorAll(".open").forEach(btn => {
+    btn.addEventListener("click", () => window.open(btn.dataset.url, "_blank", "noopener"));
+  });
+}
+
+function sortItems(items){
+  const mode = sortSelect.value;
+  return [...items].sort((a,b) => {
+    if(mode === "az") return (a.title || "").localeCompare(b.title || "", "fr");
+    if(mode === "za") return (b.title || "").localeCompare(a.title || "", "fr");
+    return parseDate(b.updated || b.created) - parseDate(a.updated || a.created);
+  });
+}
+
+function showResults(){
+  const q = normalizeSearchText(search.value.trim());
+
+  let filtered = communications.filter(item => {
     const haystack = item._searchText || normalizeSearchText(
-      `${item.title} ${item.description} ${item.category} ${item.status}`
+      `${item.title} ${item.description} ${item.category}`
     );
-    const normalizedQuery = normalizeSearchText(q);
-    return (!normalizedQuery || haystack.includes(normalizedQuery)) &&
-           (!cat || item.category === cat) &&
-           (!stat || item.status === stat);
-  }).sort((a,b) => parseDate(b.updated || b.created) - parseDate(a.updated || a.created));
+    return (!q || haystack.includes(q)) &&
+           (!activeCategory || item.category === activeCategory);
+  });
 
-  count.textContent = `${filtered.length} communication${filtered.length > 1 ? "s" : ""}`;
+  filtered = sortItems(filtered);
+  resultsSection.classList.add("visible");
+
+  if(activeCategory){
+    resultsTitle.textContent = activeCategory;
+  }else if(q){
+    resultsTitle.textContent = `Résultats pour “${search.value.trim()}”`;
+  }else{
+    resultsTitle.textContent = "Toutes les communications";
+  }
 
   if(!filtered.length){
     cards.innerHTML = '<div class="empty">Aucune communication ne correspond à votre recherche.</div>';
@@ -565,10 +846,8 @@ function render(){
     </article>
   `).join("");
 
-  document.querySelectorAll(".card .open").forEach(btn => {
-    btn.addEventListener("click", () =>
-      window.open(btn.dataset.url, "_blank", "noopener")
-    );
+  cards.querySelectorAll(".open").forEach(btn => {
+    btn.addEventListener("click", () => window.open(btn.dataset.url, "_blank", "noopener"));
   });
 }
 
@@ -581,34 +860,34 @@ async function loadCommunications(){
 
     communications.forEach(item => {
       item._searchText = normalizeSearchText(
-        `${item.title || ""} ${item.description || ""} ${item.category || ""} ${item.status || ""}`
+        `${item.title || ""} ${item.description || ""} ${item.category || ""}`
       );
     });
 
-    fillCategories();
+    totalCount.textContent = `${communications.length} communication${communications.length > 1 ? "s" : ""}`;
+    renderCategories();
     renderLatest();
-    render();
-
     indexPageContents();
-
-    const now = new Date();
-    updateInfo.textContent = "Données chargées le " + now.toLocaleDateString("fr-FR") +
-      " à " + now.toLocaleTimeString("fr-FR", {hour:"2-digit", minute:"2-digit"});
   }catch(error){
     console.error(error);
-    cards.innerHTML = `
-      <div class="empty error">
-        Impossible de charger <strong>communications.json</strong>.<br><br>
-        Vérifie que ce fichier se trouve dans le même dossier que <strong>index.html</strong>
-        sur GitHub Pages.
-      </div>`;
-    count.textContent = "Erreur de chargement";
+    latestGrid.innerHTML = '<div class="empty error">Impossible de charger communications.json.</div>';
+    if(searchIndexStatus) searchIndexStatus.textContent = "Erreur de chargement";
   }
 }
 
-search.addEventListener("input", render);
-categoryFilter.addEventListener("change", render);
-statusFilter.addEventListener("change", render);
+search.addEventListener("input", () => {
+  activeCategory = "";
+  if(search.value.trim()) showResults();
+  else resultsSection.classList.remove("visible");
+});
+
+sortSelect.addEventListener("change", showResults);
+
+showAllBtn.addEventListener("click", () => {
+  activeCategory = "";
+  search.value = "";
+  showResults();
+});
 
 loadCommunications();
 </script>
