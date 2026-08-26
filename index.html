@@ -342,23 +342,11 @@ function renderLatest(){
     <div class="date">Mis à jour le ${formatDateISO(latest.updated || latest.created)}</div>
     <div class="actions">
       <button class="btn open latest-open" data-url="${escapeHtml(latest.url)}">Ouvrir la page</button>
-      <button class="btn copy latest-copy" data-url="${escapeHtml(latest.url)}">Copier le lien</button>
     </div>
   `;
   latestCard.querySelector(".latest-open").addEventListener("click", e =>
     window.open(e.currentTarget.dataset.url, "_blank", "noopener")
   );
-  latestCard.querySelector(".latest-copy").addEventListener("click", async e => {
-    const btn = e.currentTarget;
-    try{
-      await navigator.clipboard.writeText(btn.dataset.url);
-      const old = btn.textContent;
-      btn.textContent = "Lien copié ✓";
-      setTimeout(() => btn.textContent = old, 1400);
-    }catch{
-      prompt("Copiez ce lien :", btn.dataset.url);
-    }
-  });
 }
 
 
@@ -415,7 +403,6 @@ function render(){
       <div class="date">Dernière mise à jour : ${formatDateISO(item.updated || item.created)}</div>
       <div class="actions">
         <button class="btn open" data-url="${escapeHtml(item.url)}">Ouvrir la page</button>
-        <button class="btn copy" data-url="${escapeHtml(item.url)}">Copier le lien</button>
       </div>
     </article>
   `).join("");
@@ -423,18 +410,6 @@ function render(){
   document.querySelectorAll(".open").forEach(btn => {
     btn.addEventListener("click", () => window.open(btn.dataset.url, "_blank", "noopener"));
   });
-
-  document.querySelectorAll(".copy").forEach(btn => {
-    btn.addEventListener("click", async () => {
-      try{
-        await navigator.clipboard.writeText(btn.dataset.url);
-        const old = btn.textContent;
-        btn.textContent = "Lien copié ✓";
-        setTimeout(() => btn.textContent = old, 1400);
-      }catch(e){
-        prompt("Copiez ce lien :", btn.dataset.url);
-      }
-    });
   });
 }
 
