@@ -226,6 +226,43 @@
   .category.type-pill-archives{background:#eef1f3;color:#66737d}
   .category.type-pill-autres{background:#e8f5fa;color:#084f73}
 
+
+  .card-visual{
+    height:138px;
+    margin:-20px -20px 16px;
+    border-radius:14px 14px 0 0;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#eef5fa;
+    border-bottom:1px solid var(--line);
+  }
+  .card-visual svg{
+    width:100%;
+    height:100%;
+    display:block;
+  }
+  .latest-card{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 250px;
+    gap:20px;
+    align-items:center;
+  }
+  .latest-content{min-width:0}
+  .latest-visual{
+    height:160px;
+    border-radius:14px;
+    overflow:hidden;
+    background:#eef5fa;
+    border:1px solid var(--line);
+  }
+  .latest-visual svg{width:100%;height:100%;display:block}
+  @media(max-width:720px){
+    .latest-card{grid-template-columns:1fr}
+    .latest-visual{order:-1;height:145px}
+  }
+
 </style>
 </head>
 <body>
@@ -324,6 +361,107 @@ function formatDateISO(value){
   return d.toLocaleDateString("fr-FR");
 }
 
+
+function illustrationFor(item){
+  const cat = categorySlug(item.category);
+
+  const palette = {
+    "guides-pratiques": {bg:"#e9f0fb", main:"#2e6dbf", accent:"#f5a800"},
+    "adhesion": {bg:"#eaf5e5", main:"#379331", accent:"#2e6dbf"},
+    "communiques": {bg:"#fff3d8", main:"#f5a800", accent:"#0e1f4a"},
+    "evenements": {bg:"#f4eafb", main:"#a45dbd", accent:"#f5a800"},
+    "actualites": {bg:"#e5f6f6", main:"#0b8f8f", accent:"#2e6dbf"},
+    "archives": {bg:"#eef1f3", main:"#7f8c98", accent:"#4a4a6a"},
+    "autres": {bg:"#e8f5fa", main:"#54b8d3", accent:"#0e1f4a"}
+  };
+  const p = palette[cat] || palette.autres;
+
+  // Image spécifique facultative depuis communications.json
+  if(item.image){
+    return `<img src="${escapeHtml(item.image)}" alt="" style="width:100%;height:100%;object-fit:cover">`;
+  }
+
+  if(cat === "guides-pratiques"){
+    return `
+      <svg viewBox="0 0 420 180" aria-hidden="true">
+        <rect width="420" height="180" fill="${p.bg}"/>
+        <circle cx="340" cy="38" r="36" fill="${p.accent}" opacity=".22"/>
+        <path d="M90 35h150c12 0 22 10 22 22v91H112c-12 0-22-10-22-22z" fill="#fff"/>
+        <path d="M112 35h150v113H112z" fill="#fff" stroke="${p.main}" stroke-width="5"/>
+        <path d="M135 64h92M135 88h72M135 112h88" stroke="${p.main}" stroke-width="8" stroke-linecap="round" opacity=".75"/>
+        <path d="M257 35v113" stroke="${p.main}" stroke-width="5"/>
+        <path d="M274 48l28 28" stroke="${p.accent}" stroke-width="12" stroke-linecap="round"/>
+        <circle cx="306" cy="80" r="12" fill="${p.accent}"/>
+      </svg>`;
+  }
+
+  if(cat === "adhesion"){
+    return `
+      <svg viewBox="0 0 420 180" aria-hidden="true">
+        <rect width="420" height="180" fill="${p.bg}"/>
+        <circle cx="125" cy="66" r="28" fill="${p.main}"/>
+        <circle cx="210" cy="54" r="32" fill="${p.accent}"/>
+        <circle cx="295" cy="66" r="28" fill="${p.main}" opacity=".78"/>
+        <path d="M75 145c5-34 26-51 50-51s45 17 50 51" fill="${p.main}" opacity=".88"/>
+        <path d="M150 145c6-42 31-63 60-63s54 21 60 63" fill="${p.accent}"/>
+        <path d="M245 145c5-34 26-51 50-51s45 17 50 51" fill="${p.main}" opacity=".75"/>
+        <circle cx="346" cy="38" r="24" fill="#fff"/>
+        <path d="M334 38l9 9 17-20" fill="none" stroke="${p.main}" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>`;
+  }
+
+  if(cat === "communiques"){
+    return `
+      <svg viewBox="0 0 420 180" aria-hidden="true">
+        <rect width="420" height="180" fill="${p.bg}"/>
+        <path d="M90 70h82l96-38v116l-96-38H90z" fill="${p.main}"/>
+        <rect x="78" y="76" width="42" height="30" rx="8" fill="${p.accent}"/>
+        <path d="M145 112l18 44" stroke="${p.accent}" stroke-width="14" stroke-linecap="round"/>
+        <path d="M294 58c28 15 28 49 0 64M322 44c46 25 46 75 0 100" fill="none" stroke="${p.accent}" stroke-width="9" stroke-linecap="round" opacity=".8"/>
+      </svg>`;
+  }
+
+  if(cat === "evenements"){
+    return `
+      <svg viewBox="0 0 420 180" aria-hidden="true">
+        <rect width="420" height="180" fill="${p.bg}"/>
+        <rect x="92" y="40" width="236" height="110" rx="16" fill="#fff" stroke="${p.main}" stroke-width="5"/>
+        <rect x="92" y="40" width="236" height="34" rx="16" fill="${p.main}"/>
+        <path d="M138 29v28M282 29v28" stroke="${p.accent}" stroke-width="10" stroke-linecap="round"/>
+        <circle cx="142" cy="101" r="11" fill="${p.main}"/>
+        <circle cx="210" cy="101" r="11" fill="${p.accent}"/>
+        <circle cx="278" cy="101" r="11" fill="${p.main}"/>
+      </svg>`;
+  }
+
+  if(cat === "actualites"){
+    return `
+      <svg viewBox="0 0 420 180" aria-hidden="true">
+        <rect width="420" height="180" fill="${p.bg}"/>
+        <rect x="75" y="34" width="270" height="118" rx="14" fill="#fff" stroke="${p.main}" stroke-width="5"/>
+        <rect x="96" y="58" width="86" height="64" rx="8" fill="${p.main}" opacity=".85"/>
+        <path d="M204 62h112M204 84h90M204 108h104M96 137h220" stroke="${p.accent}" stroke-width="8" stroke-linecap="round"/>
+      </svg>`;
+  }
+
+  if(cat === "archives"){
+    return `
+      <svg viewBox="0 0 420 180" aria-hidden="true">
+        <rect width="420" height="180" fill="${p.bg}"/>
+        <path d="M110 62h200v88H110z" fill="#fff" stroke="${p.main}" stroke-width="5"/>
+        <path d="M90 40h240v34H90z" fill="${p.main}"/>
+        <path d="M170 102h80" stroke="${p.accent}" stroke-width="10" stroke-linecap="round"/>
+      </svg>`;
+  }
+
+  return `
+    <svg viewBox="0 0 420 180" aria-hidden="true">
+      <rect width="420" height="180" fill="${p.bg}"/>
+      <circle cx="210" cy="90" r="58" fill="${p.main}" opacity=".16"/>
+      <path d="M150 90h120M210 30v120" stroke="${p.main}" stroke-width="14" stroke-linecap="round"/>
+    </svg>`;
+}
+
 function renderLatest(){
   if(!communications.length){
     latestCard.innerHTML = '<p>Aucune communication disponible.</p>';
@@ -336,13 +474,16 @@ function renderLatest(){
   latestCard.style.borderLeftColor = getComputedStyle(document.documentElement)
     .getPropertyValue("--accent");
   latestCard.innerHTML = `
-    <span class="latest-badge">Nouveau · ${escapeHtml(latest.category || "Autres")}</span>
-    <h2>${escapeHtml(latest.title)}</h2>
-    <p>${escapeHtml(latest.description || "")}</p>
-    <div class="date">Mis à jour le ${formatDateISO(latest.updated || latest.created)}</div>
-    <div class="actions">
-      <button class="btn open latest-open" data-url="${escapeHtml(latest.url)}">Ouvrir la page</button>
+    <div class="latest-content">
+      <span class="latest-badge">Nouveau · ${escapeHtml(latest.category || "Autres")}</span>
+      <h2>${escapeHtml(latest.title)}</h2>
+      <p>${escapeHtml(latest.description || "")}</p>
+      <div class="date">Mis à jour le ${formatDateISO(latest.updated || latest.created)}</div>
+      <div class="actions">
+        <button class="btn open latest-open" data-url="${escapeHtml(latest.url)}">Ouvrir la page</button>
+      </div>
     </div>
+    <div class="latest-visual">${illustrationFor(latest)}</div>
   `;
   latestCard.querySelector(".latest-open").addEventListener("click", e =>
     window.open(e.currentTarget.dataset.url, "_blank", "noopener")
@@ -394,6 +535,7 @@ function render(){
 
   cards.innerHTML = filtered.map(item => `
     <article class="card type-${categorySlug(item.category)}">
+      <div class="card-visual">${illustrationFor(item)}</div>
       <div class="topline">
         <span class="category type-pill-${categorySlug(item.category)}">${escapeHtml(item.category || "Sans catégorie")}</span>
         <span class="status ${statusClass(item.status)}">${escapeHtml(item.status || "")}</span>
