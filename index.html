@@ -467,12 +467,11 @@ function renderLatest(){
     latestCard.innerHTML = '<p>Aucune communication disponible.</p>';
     return;
   }
+
   const latest = [...communications].sort((a,b) =>
     parseDate(b.updated || b.created) - parseDate(a.updated || a.created)
   )[0];
-  const slug = categorySlug(latest.category);
-  latestCard.style.borderLeftColor = getComputedStyle(document.documentElement)
-    .getPropertyValue("--accent");
+
   latestCard.innerHTML = `
     <div class="latest-content">
       <span class="latest-badge">Nouveau · ${escapeHtml(latest.category || "Autres")}</span>
@@ -485,11 +484,14 @@ function renderLatest(){
     </div>
     <div class="latest-visual">${illustrationFor(latest)}</div>
   `;
-  latestCard.querySelector(".latest-open").addEventListener("click", e =>
-    window.open(e.currentTarget.dataset.url, "_blank", "noopener")
-  );
-}
 
+  const openBtn = latestCard.querySelector(".latest-open");
+  if(openBtn){
+    openBtn.addEventListener("click", () =>
+      window.open(openBtn.dataset.url, "_blank", "noopener")
+    );
+  }
+}
 
 function statusClass(status){
   if(status === "En ligne") return "online";
@@ -549,9 +551,10 @@ function render(){
     </article>
   `).join("");
 
-  document.querySelectorAll(".open").forEach(btn => {
-    btn.addEventListener("click", () => window.open(btn.dataset.url, "_blank", "noopener"));
-  });
+  document.querySelectorAll(".card .open").forEach(btn => {
+    btn.addEventListener("click", () =>
+      window.open(btn.dataset.url, "_blank", "noopener")
+    );
   });
 }
 
