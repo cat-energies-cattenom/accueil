@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -167,6 +168,65 @@
     .toolbar input{grid-column:auto}
     .actions{flex-direction:column}
   }
+
+  .latest-wrap{
+    margin:22px 0 18px;
+  }
+  .latest-title{
+    font-size:14px;
+    font-weight:800;
+    color:var(--primary-dark);
+    margin:0 0 8px 2px;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+  }
+  .latest-card{
+    position:relative;
+    overflow:hidden;
+    background:linear-gradient(135deg,#ffffff,#f2f8fb);
+    border:1px solid var(--line);
+    border-left:6px solid var(--accent);
+    border-radius:18px;
+    box-shadow:var(--shadow);
+    padding:20px 22px;
+  }
+  .latest-card h2{
+    margin:5px 0 8px;
+    font-size:23px;
+  }
+  .latest-card p{
+    margin:0 0 14px;
+    color:var(--muted);
+  }
+  .latest-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    border-radius:999px;
+    padding:6px 10px;
+    font-size:12px;
+    font-weight:800;
+    background:#fff2d8;
+    color:#9a6200;
+  }
+
+  /* Code couleur par type de page */
+  .type-guides-pratiques{ border-top:5px solid #2e6dbf; }
+  .type-adhesion{ border-top:5px solid #379331; }
+  .type-communiques{ border-top:5px solid #f5a800; }
+  .type-evenements{ border-top:5px solid #a45dbd; }
+  .type-actualites{ border-top:5px solid #0b8f8f; }
+  .type-archives{ border-top:5px solid #7f8c98; }
+  .type-autres{ border-top:5px solid #54b8d3; }
+
+  .category.type-pill-guides-pratiques{background:#e9f0fb;color:#2e6dbf}
+  .category.type-pill-adhesion{background:#eaf5e5;color:#2f7f2a}
+  .category.type-pill-communiques{background:#fff3d8;color:#9a6200}
+  .category.type-pill-evenements{background:#f4eafb;color:#7c3f94}
+  .category.type-pill-actualites{background:#e5f6f6;color:#087070}
+  .category.type-pill-archives{background:#eef1f3;color:#66737d}
+  .category.type-pill-autres{background:#e8f5fa;color:#084f73}
+
 </style>
 </head>
 <body>
@@ -210,6 +270,15 @@
     </select>
   </section>
 
+  <section class="latest-wrap">
+    <div class="latest-title">Dernier ajout</div>
+    <div id="latestCard" class="latest-card">
+      <span class="latest-badge">Nouveau</span>
+      <h2>Chargement…</h2>
+      <p>Récupération de la dernière communication.</p>
+    </div>
+  </section>
+
   <div class="meta">
     <span id="count">Chargement…</span>
     <span id="updateInfo">Données dynamiques</span>
@@ -233,6 +302,66 @@ const categoryFilter = document.getElementById("categoryFilter");
 const statusFilter = document.getElementById("statusFilter");
 const count = document.getElementById("count");
 const updateInfo = document.getElementById("updateInfo");
+const latestCard = document.getElementById("latestCard");
+
+
+function categorySlug(value){
+  return String(value || "Autres")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-")
+    .replace(/^-+|-+$/g,"") || "autres";
+}
+
+function parseDate(value){
+  if(!value) return new Date(0);
+  const d = new Date(value);
+  return isNaN(d.getTime()) ? new Date(0) : d;
+}
+
+function formatDateISO(value){
+  const d = parseDate(value);
+  if(d.getTime() === 0) return "Non renseignée";
+  return d.toLocaleDateString("fr-FR");
+}
+
+function renderLatest(){
+  if(!communications.length){
+    latestCard.innerHTML = '<p>Aucune communication disponible.</p>';
+    return;
+  }
+  const latest = [...communications].sort((a,b) =>
+    parseDate(b.updated || b.created) - parseDate(a.updated || a.created)
+  )[0];
+  const slug = categorySlug(latest.category);
+  latestCard.style.borderLeftColor = getComputedStyle(document.documentElement)
+    .getPropertyValue("--accent");
+  latestCard.innerHTML = `
+    <span class="latest-badge">Nouveau · ${escapeHtml(latest.category || "Autres")}</span>
+    <h2>${escapeHtml(latest.title)}</h2>
+    <p>${escapeHtml(latest.description || "")}</p>
+    <div class="date">Mis à jour le ${formatDateISO(latest.updated || latest.created)}</div>
+    <div class="actions">
+      <button class="btn open latest-open" data-url="${escapeHtml(latest.url)}">Ouvrir la page</button>
+      <button class="btn copy latest-copy" data-url="${escapeHtml(latest.url)}">Copier le lien</button>
+    </div>
+  `;
+  latestCard.querySelector(".latest-open").addEventListener("click", e =>
+    window.open(e.currentTarget.dataset.url, "_blank", "noopener")
+  );
+  latestCard.querySelector(".latest-copy").addEventListener("click", async e => {
+    const btn = e.currentTarget;
+    try{
+      await navigator.clipboard.writeText(btn.dataset.url);
+      const old = btn.textContent;
+      btn.textContent = "Lien copié ✓";
+      setTimeout(() => btn.textContent = old, 1400);
+    }catch{
+      prompt("Copiez ce lien :", btn.dataset.url);
+    }
+  });
+}
+
 
 function statusClass(status){
   if(status === "En ligne") return "online";
@@ -267,7 +396,7 @@ function render(){
     return (!q || haystack.includes(q)) &&
            (!cat || item.category === cat) &&
            (!stat || item.status === stat);
-  });
+  }).sort((a,b) => parseDate(b.updated || b.created) - parseDate(a.updated || a.created));
 
   count.textContent = `${filtered.length} communication${filtered.length > 1 ? "s" : ""}`;
 
@@ -277,14 +406,14 @@ function render(){
   }
 
   cards.innerHTML = filtered.map(item => `
-    <article class="card">
+    <article class="card type-${categorySlug(item.category)}">
       <div class="topline">
-        <span class="category">${escapeHtml(item.category || "Sans catégorie")}</span>
+        <span class="category type-pill-${categorySlug(item.category)}">${escapeHtml(item.category || "Sans catégorie")}</span>
         <span class="status ${statusClass(item.status)}">${escapeHtml(item.status || "")}</span>
       </div>
       <h2>${escapeHtml(item.title)}</h2>
       <div class="desc">${escapeHtml(item.description || "")}</div>
-      <div class="date">Dernière mise à jour : ${escapeHtml(item.date || "Non renseignée")}</div>
+      <div class="date">Dernière mise à jour : ${formatDateISO(item.updated || item.created)}</div>
       <div class="actions">
         <button class="btn open" data-url="${escapeHtml(item.url)}">Ouvrir la page</button>
         <button class="btn copy" data-url="${escapeHtml(item.url)}">Copier le lien</button>
@@ -317,6 +446,7 @@ async function loadCommunications(){
 
     communications = await response.json();
     fillCategories();
+    renderLatest();
     render();
 
     const now = new Date();
