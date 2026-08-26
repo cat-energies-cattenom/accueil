@@ -184,7 +184,7 @@
     overflow:hidden;
     background:linear-gradient(135deg,#ffffff,#f2f8fb);
     border:1px solid var(--line);
-    border-left:6px solid var(--accent);
+    border-top:5px solid #54b8d3;
     border-radius:18px;
     box-shadow:var(--shadow);
     padding:20px 22px;
@@ -230,48 +230,31 @@
     overflow:hidden;
     background:linear-gradient(135deg,#ffffff,#f2f8fb);
     border:1px solid var(--line);
-    border-left:6px solid var(--accent);
+    border-top:5px solid #54b8d3;
     border-radius:18px;
     box-shadow:var(--shadow);
     padding:20px 22px;
   }
   .latest-content{min-width:0}
-}
-
 
   /* Différenciation visuelle renforcée par catégorie */
   .card{
     position:relative;
     overflow:hidden;
   }
-  .card::before{
-    content:"";
-    position:absolute;
-    left:0; top:0; bottom:0;
-    width:6px;
-    background:#54b8d3;
-  }
-
-  .type-guides-pratiques{background:linear-gradient(180deg,#f8fbff,#ffffff)}
-  .type-guides-pratiques::before{background:#2e6dbf}
+.type-guides-pratiques{background:linear-gradient(180deg,#f8fbff,#ffffff)}
 
   .type-adhesion{background:linear-gradient(180deg,#f8fff5,#ffffff)}
-  .type-adhesion::before{background:#379331}
 
   .type-communiques{background:linear-gradient(180deg,#fffaf0,#ffffff)}
-  .type-communiques::before{background:#f5a800}
 
   .type-evenements{background:linear-gradient(180deg,#fcf7ff,#ffffff)}
-  .type-evenements::before{background:#a45dbd}
 
   .type-actualites{background:linear-gradient(180deg,#f3ffff,#ffffff)}
-  .type-actualites::before{background:#0b8f8f}
 
   .type-archives{background:linear-gradient(180deg,#f7f8f9,#ffffff)}
-  .type-archives::before{background:#7f8c98}
 
   .type-autres{background:linear-gradient(180deg,#f5fbfd,#ffffff)}
-  .type-autres::before{background:#54b8d3}
 
   .contact-box{
     margin:28px 0 0;
@@ -307,6 +290,10 @@
     white-space:nowrap;
   }
   .contact-link:hover{background:#eef5fa}
+
+
+  .card{border-left:1px solid var(--line) !important;}
+  .latest-card{border-left:1px solid var(--line) !important;}
 
 </style>
 </head>
