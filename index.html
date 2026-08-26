@@ -295,6 +295,13 @@
   .card{border-left:1px solid var(--line) !important;}
   .latest-card{border-left:1px solid var(--line) !important;}
 
+
+  .search-index-status{
+    margin-top:8px;
+    font-size:12px;
+    color:var(--muted);
+    text-align:right;
+  }
 </style>
 </head>
 <body>
@@ -337,6 +344,7 @@
       <option value="Archivé">Archivé</option>
     </select>
   </section>
+  <div id="searchIndexStatus" class="search-index-status">Indexation du contenu des pages…</div>
 
   <section class="latest-wrap">
     <div class="latest-title">Dernier ajout</div>
@@ -382,6 +390,7 @@ const statusFilter = document.getElementById("statusFilter");
 const count = document.getElementById("count");
 const updateInfo = document.getElementById("updateInfo");
 const latestCard = document.getElementById("latestCard");
+const searchIndexStatus = document.getElementById("searchIndexStatus");
 
 
 function categorySlug(value){
@@ -458,14 +467,78 @@ function fillCategories(){
   });
 }
 
+
+function normalizeSearchText(value){
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+}
+
+function extractPageText(htmlText){
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(htmlText, "text/html");
+  doc.querySelectorAll("script, style, noscript, svg").forEach(el => el.remove());
+
+  return normalizeSearchText(
+    (doc.title || "") + " " +
+    (doc.body ? doc.body.innerText : "")
+  ).replace(/\s+/g, " ").trim();
+}
+
+async function indexOnePage(item){
+  item._searchText = normalizeSearchText(
+    `${item.title || ""} ${item.description || ""} ${item.category || ""} ${item.status || ""}`
+  );
+
+  if(!item.url) return false;
+
+  try{
+    const response = await fetch(item.url, { cache: "no-store" });
+    if(!response.ok) throw new Error("HTTP " + response.status);
+
+    const pageHtml = await response.text();
+    item._searchText += " " + extractPageText(pageHtml);
+    return true;
+  }catch(error){
+    console.warn("Impossible d’indexer :", item.url, error);
+    return false;
+  }
+}
+
+async function indexPageContents(){
+  if(!communications.length){
+    if(searchIndexStatus) searchIndexStatus.textContent = "";
+    return;
+  }
+
+  if(searchIndexStatus) searchIndexStatus.textContent = "Indexation du contenu des pages…";
+
+  const results = await Promise.allSettled(
+    communications.map(item => indexOnePage(item))
+  );
+
+  const ok = results.filter(r => r.status === "fulfilled" && r.value === true).length;
+
+  if(searchIndexStatus){
+    searchIndexStatus.textContent =
+      `${ok}/${communications.length} page${communications.length > 1 ? "s" : ""} indexée${ok > 1 ? "s" : ""} pour la recherche`;
+  }
+
+  render();
+}
+
 function render(){
   const q = search.value.toLowerCase().trim();
   const cat = categoryFilter.value;
   const stat = statusFilter.value;
 
   const filtered = communications.filter(item => {
-    const haystack = `${item.title} ${item.description} ${item.category} ${item.status}`.toLowerCase();
-    return (!q || haystack.includes(q)) &&
+    const haystack = item._searchText || normalizeSearchText(
+      `${item.title} ${item.description} ${item.category} ${item.status}`
+    );
+    const normalizedQuery = normalizeSearchText(q);
+    return (!normalizedQuery || haystack.includes(normalizedQuery)) &&
            (!cat || item.category === cat) &&
            (!stat || item.status === stat);
   }).sort((a,b) => parseDate(b.updated || b.created) - parseDate(a.updated || a.created));
@@ -505,9 +578,18 @@ async function loadCommunications(){
     if(!response.ok) throw new Error("HTTP " + response.status);
 
     communications = await response.json();
+
+    communications.forEach(item => {
+      item._searchText = normalizeSearchText(
+        `${item.title || ""} ${item.description || ""} ${item.category || ""} ${item.status || ""}`
+      );
+    });
+
     fillCategories();
     renderLatest();
     render();
+
+    indexPageContents();
 
     const now = new Date();
     updateInfo.textContent = "Données chargées le " + now.toLocaleDateString("fr-FR") +
