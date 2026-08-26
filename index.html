@@ -559,6 +559,63 @@
     .sort-select{width:100%}
   }
 
+
+  /* Résultats de recherche compacts, affichés juste sous la recherche */
+  .results-section.search-results{
+    margin-top:14px;
+    margin-bottom:28px;
+  }
+  .results-section.search-results .section-head{
+    margin-bottom:10px;
+  }
+  .grid.search-mode{
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .search-result-row{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:18px;
+    align-items:center;
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:14px 16px;
+    box-shadow:0 3px 12px rgba(31,72,94,.05);
+  }
+  .search-result-main{min-width:0}
+  .search-result-top{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    flex-wrap:wrap;
+    margin-bottom:5px;
+  }
+  .search-result-row h3{
+    margin:0;
+    font-size:17px;
+    color:var(--text);
+  }
+  .search-result-row p{
+    margin:0;
+    color:var(--muted);
+    font-size:13px;
+    line-height:1.45;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  .search-result-row .btn{
+    min-width:120px;
+    white-space:nowrap;
+  }
+  @media(max-width:620px){
+    .search-result-row{grid-template-columns:1fr}
+    .search-result-row p{white-space:normal}
+    .search-result-row .btn{width:100%}
+  }
+
 </style>
 </head>
 <body>
@@ -601,6 +658,21 @@
       <div id="searchIndexStatus" class="search-index-status">Indexation du contenu des pages…</div>
     </div>
   </section>
+  <section id="resultsSection" class="results-section">
+    <div class="section-head">
+      <div>
+        <div class="eyebrow">Résultats</div>
+        <h2 id="resultsTitle">Toutes les communications</h2>
+      </div>
+      <select id="sortSelect" class="sort-select">
+        <option value="recent">Plus récentes</option>
+        <option value="az">A → Z</option>
+        <option value="za">Z → A</option>
+      </select>
+    </div>
+    <div id="cards" class="grid"></div>
+  </section>
+
 
   <section class="category-section">
     <div class="section-head">
@@ -624,21 +696,6 @@
     <div id="latestGrid" class="latest-grid">
       <div class="empty">Chargement des dernières communications…</div>
     </div>
-  </section>
-
-  <section id="resultsSection" class="results-section">
-    <div class="section-head">
-      <div>
-        <div class="eyebrow">Résultats</div>
-        <h2 id="resultsTitle">Toutes les communications</h2>
-      </div>
-      <select id="sortSelect" class="sort-select">
-        <option value="recent">Plus récentes</option>
-        <option value="az">A → Z</option>
-        <option value="za">Z → A</option>
-      </select>
-    </div>
-    <div id="cards" class="grid"></div>
   </section>
 
   <section class="contact-box">
@@ -803,7 +860,8 @@ function sortItems(items){
 }
 
 function showResults(){
-  const q = normalizeSearchText(search.value.trim());
+  const rawQuery = search.value.trim();
+  const q = normalizeSearchText(rawQuery);
 
   let filtered = communications.filter(item => {
     const haystack = item._searchText || normalizeSearchText(
@@ -816,10 +874,14 @@ function showResults(){
   filtered = sortItems(filtered);
   resultsSection.classList.add("visible");
 
+  const isSearch = Boolean(q) && !activeCategory;
+  resultsSection.classList.toggle("search-results", isSearch);
+  cards.classList.toggle("search-mode", isSearch);
+
   if(activeCategory){
     resultsTitle.textContent = activeCategory;
   }else if(q){
-    resultsTitle.textContent = `Résultats pour “${search.value.trim()}”`;
+    resultsTitle.textContent = `${filtered.length} résultat${filtered.length > 1 ? "s" : ""} pour “${rawQuery}”`;
   }else{
     resultsTitle.textContent = "Toutes les communications";
   }
@@ -829,20 +891,35 @@ function showResults(){
     return;
   }
 
-  cards.innerHTML = filtered.map(item => `
-    <article class="card type-${categorySlug(item.category)}">
-      <div class="topline">
-        <span class="category type-pill-${categorySlug(item.category)}">${escapeHtml(item.category || "Sans catégorie")}</span>
-        <span class="status ${statusClass(item.status)}">${escapeHtml(item.status || "")}</span>
-      </div>
-      <h2>${escapeHtml(item.title)}</h2>
-      <div class="desc">${escapeHtml(item.description || "")}</div>
-      <div class="date">Dernière mise à jour : ${formatDateISO(item.updated || item.created)}</div>
-      <div class="actions">
-        <button class="btn open" data-url="${escapeHtml(item.url)}">Ouvrir la page</button>
-      </div>
-    </article>
-  `).join("");
+  if(isSearch){
+    cards.innerHTML = filtered.map(item => `
+      <article class="search-result-row">
+        <div class="search-result-main">
+          <div class="search-result-top">
+            <span class="category type-pill-${categorySlug(item.category)}">${escapeHtml(item.category || "Sans catégorie")}</span>
+            <h3>${escapeHtml(item.title)}</h3>
+          </div>
+          <p>${escapeHtml(item.description || "")}</p>
+        </div>
+        <button class="btn open" data-url="${escapeHtml(item.url)}">Ouvrir</button>
+      </article>
+    `).join("");
+  }else{
+    cards.innerHTML = filtered.map(item => `
+      <article class="card type-${categorySlug(item.category)}">
+        <div class="topline">
+          <span class="category type-pill-${categorySlug(item.category)}">${escapeHtml(item.category || "Sans catégorie")}</span>
+          <span class="status ${statusClass(item.status)}">${escapeHtml(item.status || "")}</span>
+        </div>
+        <h2>${escapeHtml(item.title)}</h2>
+        <div class="desc">${escapeHtml(item.description || "")}</div>
+        <div class="date">Dernière mise à jour : ${formatDateISO(item.updated || item.created)}</div>
+        <div class="actions">
+          <button class="btn open" data-url="${escapeHtml(item.url)}">Ouvrir la page</button>
+        </div>
+      </article>
+    `).join("");
+  }
 
   cards.querySelectorAll(".open").forEach(btn => {
     btn.addEventListener("click", () => window.open(btn.dataset.url, "_blank", "noopener"));
